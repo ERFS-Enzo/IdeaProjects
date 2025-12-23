@@ -1,8 +1,37 @@
 package dev.java10x.Fridge.controller;
 
-import org.springframework.web.bind.annotation.RestController;
+import dev.java10x.Fridge.model.Food;
+import dev.java10x.Fridge.service.FoodService;
+//import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*    ;
 
-@RestController 
+import java.util.List;
+
+@RestController
+@RequestMapping("/food")
 public class FoodController{
+    //injeção de dependencia
+    //@Autowired usa isso ou o construtor abaixo
+    private final FoodService foodService;
 
+    public FoodController(FoodService foodService) {
+        this.foodService = foodService;
+    }
+
+    /*
+    * REQUESTS:
+    * GET, POST, PUSH, DELETE
+    * */
+    @GetMapping
+    public List<Food> getAll() {
+        return foodService.getAll();
+    }
+    @PostMapping
+    public Food create(@RequestBody Food food){
+        return foodService.save(food);
+    }
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable Long id){
+        foodService.delete(id);
+    }
 }
